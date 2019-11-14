@@ -126,6 +126,10 @@ ifneq ($(findstring EVB-V5,$(PROFILE)),)
   __config_name_list = $(1)/config-$(KERNEL_PATCHVER)_evb_v5 $(1)/config-default
 endif
 
+ifneq ($(findstring DF1A,$(PROFILE)),)
+  __config_name_list = $(1)/config-$(KERNEL_PATCHVER)_df1a $(1)/config-default
+endif
+
 $(warning "PROFILE=$(PROFILE)  __config_name_list=$(__config_name_list)")
 
 ifneq ($(findstring FLASH,$(PROFILE)),)

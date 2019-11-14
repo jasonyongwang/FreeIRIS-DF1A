@@ -127,6 +127,9 @@ case ${board} in
 	evb_v5)
 		target_board=target/linux/siflower/sf16a18_evb_v5_${chip}_def.config
 		;;
+        df1a)
+                target_board=target/linux/siflower/sf16a18_df1a_${chip}_def.config
+                ;;
 	cpe)
 		target_board=target/linux/siflower/sf16a18_cpe_${chip}_def.config
 		;;
