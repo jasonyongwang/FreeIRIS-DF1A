@@ -1,3 +1,10 @@
 # sf16a18-sdk-4.2.10
-sdk for siflower router products,include openwrt/linux/uboot
-SDK参考文档链接：https://developers.siflower.cn/
+THIS PROJECT Fork from siflower sf16a18
+For FREEIRIS DF1A Development Board
+
+Siflower Resource:
+https://developers.siflower.cn/
+
+FreeIRIS Project:
+Project Manager hoowa.sun@gmail.com
+
