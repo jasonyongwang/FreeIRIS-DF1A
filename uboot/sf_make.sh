@@ -23,7 +23,7 @@ custom_ddr="0"
 
 show_help() {
 	echo "Usage: $0"
-	echo "    prj=p10[b/m/flash]|p20[b]|wrt|evb|86v|ac|x10|p10h|evb_v5|air001|cpe|ott_router"
+	echo "    prj=p10[b/m/flash]|p20[b]|wrt|evb|86v|ac|x10|p10h|evb_v5|df1a|air001|cpe|ott_router"
 	echo "    ver=mpw0|mpw1|fullmask"
 	echo "    mode=r|d"
 	echo "    [cmd=dmake|distclean|clean|make]"
@@ -177,7 +177,7 @@ case $prj in
 		add_sfbl_flag poe=1
 		[ -z $ddr3 ] && ddr3=em6gd16ewbh
 		;;
-	evb_v5)
+	evb_v5 | df1a)
 		DEFCONFIG="sfa18_"$ver"_p20b"
 		[ -z $ddr3 ] && ddr3=m15t1g1664a
 		;;
