@@ -79,14 +79,14 @@
 };
 
 &ethernet {
-	shutdown-portlist = "ll***";
+	shutdown-portlist = "wll**";
         led-on-off-time = /bits/ 16 <0xff 0x2ff>;
 	status = "okay";
 	smp-affinity = <2>;
 };
 
 &switch{
-	sfax8,port-map = "ll***";
+	sfax8,port-map = "wll**";
 	status = "okay";
 	smp-affinity = <2>;
 };
@@ -171,7 +171,7 @@
 	status = "okay";
 	#address-cells = <1>;
 	#size-cells = <0>;
-	/include/	"sf16a18_pmu.dtsi"
+/*	/include/	"sf16a18_pmu.dtsi"*/
 };
 
 &i2c1 {
