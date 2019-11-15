@@ -148,7 +148,7 @@
 };
 
 &i2s_master {
-	status = "okay";
+	status = "disabled";
 };
 
 &i2s_slave {
@@ -269,7 +269,8 @@
 };
 
 &uart3 {
-	status = "disabled";
+	pinctrl-0 = <&uart3_tx &uart3_rx>;
+	status = "okay";
 };
 
 &pcm0 {
