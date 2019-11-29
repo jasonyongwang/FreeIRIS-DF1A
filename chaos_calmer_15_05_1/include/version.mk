@@ -30,7 +30,7 @@ VERSION_NICK:=$(call qstrip_escape,$(CONFIG_VERSION_NICK))
 VERSION_NICK:=$(if $(VERSION_NICK),$(VERSION_NICK),$(RELEASE))
 
 VERSION_REPO:=$(call qstrip_escape,$(CONFIG_VERSION_REPO))
-VERSION_REPO:=$(if $(VERSION_REPO),$(VERSION_REPO),http://www.freeiris.co/resource/%n/binary/packages)
+VERSION_REPO:=$(if $(VERSION_REPO),$(VERSION_REPO),http://www.freeiris.co/resource/%n/packages)
 
 VERSION_DIST:=$(call qstrip_escape,$(CONFIG_VERSION_DIST))
 VERSION_DIST:=$(if $(VERSION_DIST),$(VERSION_DIST),OpenWrt)
