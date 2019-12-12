@@ -9,6 +9,7 @@
 	#size-cells = <1>;
 	compatible = "siflower,sf16a18-soc";
 
+	/* ETH的LED灯尚未完成 */
 	eth0-led {
 		compatible = "eth-led";
 		pinctrl-names = "default",  "gpio";
@@ -33,6 +34,7 @@
 		};
 	};
 
+	/* 我们没有SPDIF和ES7149声卡部分，尚未完成 */
 	spdif_codec: spdif-codec@0 {
 		compatible = "linux,spdif-dit";
 	};
@@ -44,6 +46,7 @@
 		reset-gpio = <&gpio 54 0>;
 	};
 
+	/* ETH_LED部分尚未完成 */
 	sf_mm_led: sf-mm-led {
 		compatible = "sf-mm-led";
 		blue-led-gpio = <&gpio 55 0>;
@@ -53,6 +56,7 @@
 		default-interval = <500>;
 	};
 
+	/* 不知道干嘛的，尚未完成 */
 	w18_wifi_rf: w18_wifi-rf@7A00000{
 		compatible = "siflower,pistachio-uccp";
 		phy = <&phy1>;
@@ -64,6 +68,7 @@
 		};
 	};
 
+	/* 我们没有SPDIF和ES7149声卡部分，尚未完成 */
 	spdif-audio@0 {
 		compatible = "siflower,siflower-audio";
 		model = "Siflower Spdif Audio";
@@ -74,10 +79,12 @@
 
 };
 
+/* 启用USB PHY */
 &usb_phy{
 	status = "okay";
 };
 
+/* 芯片内置以太网划分 */
 &ethernet {
 	shutdown-portlist = "wll**";
         led-on-off-time = /bits/ 16 <0xff 0x2ff>;
@@ -96,6 +103,7 @@
 	smp-affinity = <0>;
 };
 
+/* 不知道干嘛的，尚未完成 */
 &gdu {
 	status = "okay";
 	num-windows = <2>;
@@ -135,22 +143,27 @@
 	status = "okay";
 };
 
+/* USB接口 */
 &usb {
 	status = "okay";
 };
 
+/* EMMC存储器，DF1A没有 */
 &emmc {
 	status = "disabled";
 };
 
+/* SD1接口，用作TF卡 */
 &sdio {
 	status = "okay";
 };
 
+/* IIS1=31 32 33 34 35，DF1A的RS485(31 32)/PG3(33 34 35)冲突 */
 &i2s_master {
 	status = "disabled";
 };
 
+/* IIS0=26 27 28 29 30，保留IIS0，可选定义为PCM0或全功能UART1 */
 &i2s_slave {
 	status = "okay";
 };
@@ -167,6 +180,7 @@
 */
 
 
+/* I2C0=20 21 启用PG1 */
 &i2c0 {
 	status = "okay";
 	#address-cells = <1>;
@@ -174,27 +188,12 @@
 /*	/include/	"sf16a18_pmu.dtsi"*/
 };
 
+/* I2C1=22 23 与UART2_RX TX冲突(PG1组)，关闭 */
 &i2c1 {
 	status = "disabled";
-	#address-cells = <1>;
-	#size-cells = <0>;
-/*
-	codec: es8388s@11{
-		compatible = "ambarella,es8388s";
-		reg = <0x11>;
-	};
-*/
-	es8316@11{
-		compatible = "ESSX8316";
-		reg = <0x11>;
-	};
-
-	rt5631@1a{
-		compatible = "rt5631";
-		reg = <0x1a>;
-	};
 };
 
+/* I2C2=24 25 与时钟、SYS_LED冲突，关闭 */
 &i2c2 {
 	status = "disabled";
 };
@@ -256,31 +255,39 @@
 	};
 };
 
+/* 核心板调试接口 */
 &uart0 {
 	status = "okay";
 };
 
+/* PG2组，可选IIS0、PCM0、UART1默认启动了IIS0这里关闭 */
 &uart1 {
 	status = "disabled";
 };
 
+/* 这里启用22 23两个IO(PG1组)，24 25(与时钟、SYS_LED冲突，不启用) */
 &uart2 {
+	pinctrl-0 = <&uart2_tx &uart2_rx>;
 	status = "okay";
 };
 
+/* 31 32用作RS485接口，33 34 35用作PG3的GPIO这里不启用 */
 &uart3 {
 	pinctrl-0 = <&uart3_tx &uart3_rx>;
 	status = "okay";
 };
 
+/* 参考i2s0的说明，不知道为啥i2s和pcm0都一起启动了(PG2组) */
 &pcm0 {
 	status = "okay";
 };
 
+/* 尚未知晓 */
 &pwm0 {
 	status = "okay";
 };
 
+/* IO37接口PG3组 */
 &pwm1 {
 	status = "okay";
 };
@@ -293,9 +300,10 @@
 	status = "okay";
 };
 
+/* IO 35 62 (与PG3组冲突)，关闭 */
 &spdif
 {
-	status = "okay";
+	status = "disabled";
 };
 
 &wifi_rf {
@@ -321,4 +329,25 @@
 	#size-cells = <0>;
 	gpio-leds = <&gpio 36 0>;
 	smp-affinity = <3>;
+};
+
+&gpio_keys {
+        status = "okay";
+
+        hoowa@33 {
+                label = "hoowa";
+                /*linux,input-type = <0x5>;*/
+                linux,code = <0x102>;
+                gpios = <&gpio 33 1>;
+                poll-interval = <10>;
+                debounce-interval = <20>;
+        };
+};
+
+&leds {
+        status = "okay";
+        sys_led {
+                label = "sys_led";
+                gpios = <&gpio 25 1>;
+        };
 };
