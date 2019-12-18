@@ -30,6 +30,7 @@ PHP5_MODULES = \
 	dom \
 	exif \
 	ftp \
+	dio \
 	gettext gd gmp \
 	hash \
 	iconv \
@@ -204,6 +205,13 @@ ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-ftp),)
 else
   CONFIGURE_ARGS+= --disable-ftp
 endif
+
+ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-dio),)
+  CONFIGURE_ARGS+= --enable-dio=shared
+else
+  CONFIGURE_ARGS+= --disable-dio
+endif
+
 
 ifneq ($(SDK)$(CONFIG_PACKAGE_php5-mod-gd),)
   CONFIGURE_ARGS+= \
@@ -538,6 +546,7 @@ $(eval $(call BuildModule,dom,DOM,+@PHP5_LIBXML +PACKAGE_php5-mod-dom:libxml2))
 $(eval $(call BuildModule,exif,EXIF))
 $(eval $(call BuildModule,fileinfo,Fileinfo))
 $(eval $(call BuildModule,ftp,FTP,+PACKAGE_php5-mod-ftp:libopenssl))
+$(eval $(call BuildModule,dio,DIO))
 $(eval $(call BuildModule,gd,GD graphics,+PACKAGE_php5-mod-gd:libjpeg +PACKAGE_php5-mod-gd:libpng))
 $(eval $(call BuildModule,gettext,Gettext,+PACKAGE_php5-mod-gettext:libintl-full))
 $(eval $(call BuildModule,gmp,GMP,+PACKAGE_php5-mod-gmp:libgmp))
