@@ -177,10 +177,14 @@ case $prj in
 		add_sfbl_flag poe=1
 		[ -z $ddr3 ] && ddr3=em6gd16ewbh
 		;;
-	evb_v5 | df1a)
+	evb_v5)
 		DEFCONFIG="sfa18_"$ver"_p20b"
 		[ -z $ddr3 ] && ddr3=m15t1g1664a
 		;;
+	df1a)
+                DEFCONFIG="sfa18_"$ver"_df1a"
+                [ -z $ddr3 ] && ddr3=m15t1g1664a
+                ;;
 	ott_router)
 		DEFCONFIG="sfa18_"$ver"_p10h"
 		[ -z $ddr2 ] && ddr2=m14d5121632a
