@@ -9,7 +9,6 @@
 	#size-cells = <1>;
 	compatible = "siflower,sf16a18-soc";
 
-	/* ETH的LED灯尚未完成 */
 	eth0-led {
 		compatible = "eth-led";
 		pinctrl-names = "default",  "gpio";
@@ -34,11 +33,25 @@
 		};
 	};
 
-	/* 我们没有SPDIF和ES7149声卡部分，尚未完成 */
+        eth2-led {
+                compatible = "eth-led";
+                pinctrl-names = "default",  "gpio";
+                pinctrl-0 = <&eth2_led>;
+                pinctrl-1 = <&eth2_led_gpio>;
+                eth2 {
+                        label = "eth_led2";
+                        gpios = <&gpio 57 1>;
+                        default-state = "on";
+                };
+        };
+
+/*
+	DF1A无SPDIF，不知道驱动部分是否需要移除
 	spdif_codec: spdif-codec@0 {
 		compatible = "linux,spdif-dit";
 	};
 
+	DF1A没有挂接声卡，不知道驱动部分是否需要移除
 	codec_es7149: codec-es7149@0 {
 		compatible = "es7149";
 		speaker-gpio = <&gpio 45 0>;
@@ -46,7 +59,7 @@
 		reset-gpio = <&gpio 54 0>;
 	};
 
-	/* ETH_LED部分尚未完成 */
+	DF1A无多色LED部分，不知道驱动部分是否需要移除
 	sf_mm_led: sf-mm-led {
 		compatible = "sf-mm-led";
 		blue-led-gpio = <&gpio 55 0>;
@@ -56,7 +69,8 @@
 		default-interval = <500>;
 	};
 
-	/* 不知道干嘛的，尚未完成 */
+
+	SiFlower说这DF1A部分不需要，不知道驱动部分是否需要移除
 	w18_wifi_rf: w18_wifi-rf@7A00000{
 		compatible = "siflower,pistachio-uccp";
 		phy = <&phy1>;
@@ -68,7 +82,8 @@
 		};
 	};
 
-	/* 我们没有SPDIF和ES7149声卡部分，尚未完成 */
+
+	DF1A 无SPDIF，不知道驱动部分是否需要移除
 	spdif-audio@0 {
 		compatible = "siflower,siflower-audio";
 		model = "Siflower Spdif Audio";
@@ -76,6 +91,7 @@
 		audio-codec = <&spdif_codec>;
 		audio-out;
 	};
+*/
 
 };
 
@@ -98,12 +114,14 @@
 	smp-affinity = <2>;
 };
 
+/*
+	DF1A无外置GMAC芯片，只使用了内置交换机
 &gmac {
 	status = "okay";
 	smp-affinity = <0>;
 };
 
-/* 不知道干嘛的，尚未完成 */
+	SiFlower说这部分是显示的，是否要关闭？
 &gdu {
 	status = "okay";
 	num-windows = <2>;
@@ -126,6 +144,7 @@
 		};
 	};
 };
+*/
 
 &sham {
 	status = "okay";
@@ -158,12 +177,12 @@
 	status = "okay";
 };
 
-/* IIS1=31 32 33 34 35，DF1A的RS485(31 32)/PG3(33 34 35)冲突 */
+/* IIS1=31 32 (RS485冲突)   33 34 35(PG3组的GPIO冲突)，关闭掉，不知道是否有驱动需要移除？ */
 &i2s_master {
 	status = "disabled";
 };
 
-/* IIS0=26 27 28 29 30，保留IIS0，可选定义为PCM0或全功能UART1 */
+/* IIS0=26 27 28 29 30，PG2组，保留IIS0功能 */
 &i2s_slave {
 	status = "okay";
 };
@@ -188,12 +207,12 @@
 /*	/include/	"sf16a18_pmu.dtsi"*/
 };
 
-/* I2C1=22 23 与UART2_RX TX冲突(PG1组)，关闭 */
+/* I2C1=22 23(PG1组UART2冲突)，关闭 */
 &i2c1 {
 	status = "disabled";
 };
 
-/* I2C2=24 25 与时钟、SYS_LED冲突，关闭 */
+/* I2C2=24 25(与32Khz和SYS_LED冲突)，关闭 */
 &i2c2 {
 	status = "disabled";
 };
@@ -260,34 +279,34 @@
 	status = "okay";
 };
 
-/* PG2组，可选IIS0、PCM0、UART1默认启动了IIS0这里关闭 */
+/* IO 26 27 28 29 30，与IIS0定义为PG2组冲突，关闭 */
 &uart1 {
 	status = "disabled";
 };
 
-/* 这里启用22 23两个IO(PG1组)，24 25(与时钟、SYS_LED冲突，不启用) */
+/* IO 22 23 24 25，只启用22 23两个IO(PG1组)，24 25(与32Khz、SYS_LED冲突，不启用) */
 &uart2 {
 	pinctrl-0 = <&uart2_tx &uart2_rx>;
 	status = "okay";
 };
 
-/* 31 32用作RS485接口，33 34 35用作PG3的GPIO这里不启用 */
+/* IO 31 32 34 35 只启用31 32 RS485接口，34 35(与PG3组的GPIO冲突，不启用) */
 &uart3 {
 	pinctrl-0 = <&uart3_tx &uart3_rx>;
 	status = "okay";
 };
 
-/* 参考i2s0的说明，不知道为啥i2s和pcm0都一起启动了(PG2组) */
+/* 参考iis0的说明，不知道为啥i2s和pcm0都一起启动了(PG2组) */
 &pcm0 {
 	status = "okay";
 };
 
-/* 尚未知晓 */
+/* 看原理这个接口用作WIFI_LED灯，是否应该disable？ */
 &pwm0 {
 	status = "okay";
 };
 
-/* IO37接口PG3组 */
+/* IO 37 启用在PG3组的PWM1 */
 &pwm1 {
 	status = "okay";
 };
@@ -300,7 +319,7 @@
 	status = "okay";
 };
 
-/* IO 35 62 (与PG3组冲突)，关闭 */
+/* IO 35(与PG3组冲突) 62 ，关闭 */
 &spdif
 {
 	status = "disabled";
@@ -331,6 +350,7 @@
 	smp-affinity = <3>;
 };
 
+/* 按键演示 */
 &gpio_keys {
         status = "okay";
 
@@ -344,6 +364,7 @@
         };
 };
 
+/* LED灯演示 */
 &leds {
         status = "okay";
         sys_led {
