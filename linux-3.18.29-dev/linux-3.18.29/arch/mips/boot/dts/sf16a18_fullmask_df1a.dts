@@ -45,54 +45,6 @@
                 };
         };
 
-/*
-	DF1A无SPDIF，不知道驱动部分是否需要移除
-	spdif_codec: spdif-codec@0 {
-		compatible = "linux,spdif-dit";
-	};
-
-	DF1A没有挂接声卡，不知道驱动部分是否需要移除
-	codec_es7149: codec-es7149@0 {
-		compatible = "es7149";
-		speaker-gpio = <&gpio 45 0>;
-		boot-gpio = <&gpio 53 0>;
-		reset-gpio = <&gpio 54 0>;
-	};
-
-	DF1A无多色LED部分，不知道驱动部分是否需要移除
-	sf_mm_led: sf-mm-led {
-		compatible = "sf-mm-led";
-		blue-led-gpio = <&gpio 55 0>;
-		green-led-gpio = <&gpio 56 0>;
-		red-led-gpio = <&gpio 59 0>;
-		default-mode = <0x39>;
-		default-interval = <500>;
-	};
-
-
-	SiFlower说这DF1A部分不需要，不知道驱动部分是否需要移除
-	w18_wifi_rf: w18_wifi-rf@7A00000{
-		compatible = "siflower,pistachio-uccp";
-		phy = <&phy1>;
-		#address-cells = <1>;
-		#size-cells = <0>;
-		phy1: w18_wifi-phy@1 {
-			reg = <1>;
-			max-speed = <100>;
-		};
-	};
-
-
-	DF1A 无SPDIF，不知道驱动部分是否需要移除
-	spdif-audio@0 {
-		compatible = "siflower,siflower-audio";
-		model = "Siflower Spdif Audio";
-		audio-controller = <&spdif>;
-		audio-codec = <&spdif_codec>;
-		audio-out;
-	};
-*/
-
 };
 
 /* 启用USB PHY */
@@ -113,38 +65,6 @@
 	status = "okay";
 	smp-affinity = <2>;
 };
-
-/*
-	DF1A无外置GMAC芯片，只使用了内置交换机
-&gmac {
-	status = "okay";
-	smp-affinity = <0>;
-};
-
-	SiFlower说这部分是显示的，是否要关闭？
-&gdu {
-	status = "okay";
-	num-windows = <2>;
-	rgb_order = <0 1 2>;
-	power_gpio = <26 37>;
-	bpp-mode = "RGB888";
-
-	display-timings {
-		native-mode = <&timing0>;
-		timing0: gm05004001q {
-			clock-frequency = <34539600>;
-			hactive = <800>;
-			vactive = <480>;
-			hback-porch = <46>;
-			hfront-porch = <210>;
-			vback-porch = <23>;
-			vfront-porch = <22>;
-			hsync-len = <20>;
-			vsync-len = <10>;
-		};
-	};
-};
-*/
 
 &sham {
 	status = "okay";
@@ -177,7 +97,7 @@
 	status = "okay";
 };
 
-/* IIS1=31 32 (RS485冲突)   33 34 35(PG3组的GPIO冲突)，关闭掉，不知道是否有驱动需要移除？ */
+/* IIS1=31 32 (RS485冲突)   33 34 35(PG3组的GPIO冲突)，关闭 */
 &i2s_master {
 	status = "disabled";
 };
@@ -301,9 +221,9 @@
 	status = "okay";
 };
 
-/* 看原理这个接口用作WIFI_LED灯，是否应该disable？ */
+/* 与WIFI_LED冲突disable */
 &pwm0 {
-	status = "okay";
+	status = "disabled";
 };
 
 /* IO 37 启用在PG3组的PWM1 */
@@ -337,7 +257,7 @@
 
 	#address-cells = <1>;
 	#size-cells = <0>;
-	gpio-leds = <&gpio 61 0>;
+	gpio-leds = <&gpio 36 0>;
 	smp-affinity = <2>;
 };
 
