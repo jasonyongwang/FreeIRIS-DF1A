@@ -11,6 +11,7 @@ jobs:
     - uses: actions/checkout@v1
   
     - name: make
-      run: cd chaos_calmer_15_05_1/
-      run: ./scripts/feeds install -a
-      run: ./make.sh df1a fullmask
+      run: |
+        cd chaos_calmer_15_05_1/
+        ./scripts/feeds install -a
+        ./make.sh df1a fullmask
